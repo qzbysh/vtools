@@ -271,13 +271,12 @@ class FloatMonitor(private val mContext: Context) {
             cpuLoad = 0.toDouble();
         }
 
-        // 电池电流
-        val batteryCurrentNow = batteryManager?.getLongProperty(BatteryManager.BATTERY_PROPERTY_CURRENT_NOW)
-        val batteryCurrentNowMa = if (batteryCurrentNow != null) {
-            (batteryCurrentNow / globalSPF.getInt(SpfConfig.GLOBAL_SPF_CURRENT_NOW_UNIT, SpfConfig.GLOBAL_SPF_CURRENT_NOW_UNIT_DEFAULT))
-        } else {
-            null
-        }
+        // 电池电流 微安
+        val batteryCurrentNow = batteryManager!!.getLongProperty(BatteryManager.BATTERY_PROPERTY_CURRENT_NOW)
+        // 电池电压 伏特
+        val batteryVoltage = GlobalStatus.batteryVoltage
+        // 电池功耗
+        val batteryCurrentNowMa = (batteryVoltage * batteryCurrentNow / -10000).toInt() / 100f
 
         // GPU内存使用
         val gpuMemoryUsage = GpuUtils.getMemoryUsage()
@@ -330,11 +329,11 @@ class FloatMonitor(private val mContext: Context) {
                     append(whiteBoldSpan("#FPS  $this"))
                 }
 
-                batteryCurrentNowMa?.run {
+                batteryCurrentNowMa.run {
                     if (this > -20000 && this < 20000) {
                         append("\n")
 
-                        val batteryInfo = "#BAT  " + (if (this > 0) ("+" + this) else this) + "mA"
+                        val batteryInfo = "#BAT  " + (if (this > 0) ("+$this") else this) + "W"
                         append(whiteBoldSpan(batteryInfo))
                     }
                 }
