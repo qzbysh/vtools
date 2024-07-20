@@ -29,6 +29,7 @@ object GlobalStatus {
     }
 
     var batteryCapacity = -1
+    var batteryVoltage = -1.0
     var batteryCurrentNow: Long = -1
     var batteryStatus = BatteryManager.BATTERY_STATUS_UNKNOWN
     var lastPackageName = ""
