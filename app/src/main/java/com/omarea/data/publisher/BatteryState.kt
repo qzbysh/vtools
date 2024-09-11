@@ -32,7 +32,7 @@ class BatteryState(private val applicationContext: Context) : BroadcastReceiver(
             val status = intent.getIntExtra(BatteryManager.EXTRA_STATUS, BatteryManager.BATTERY_STATUS_UNKNOWN)
             var capacity = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1)
             val temp = intent.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, -1) / 10.0f
-            val temp = intent.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, -1).toDouble() / 10.0f
+            //val temp = intent.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, -1).toDouble() / 10.0f
             var voltage = intent.getIntExtra(BatteryManager.EXTRA_VOLTAGE, 0).toDouble()
             if (voltage > 1000)
                 voltage /= 1000.0
