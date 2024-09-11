@@ -181,16 +181,15 @@ public class FloatMonitorMini(private val mContext: Context) {
         var batState: String? = null
 
         if (pollingPhase != 0) {
-            // 电池电流
-            val now = batteryManager?.getLongProperty(BatteryManager.BATTERY_PROPERTY_CURRENT_NOW)
-            val nowMA = if (now != null) {
-                (now / globalSPF.getInt(SpfConfig.GLOBAL_SPF_CURRENT_NOW_UNIT, SpfConfig.GLOBAL_SPF_CURRENT_NOW_UNIT_DEFAULT))
-            } else {
-                null
-            }
-            nowMA?.run {
+            // 电池电流 微安
+            val batteryCurrentNow = batteryManager!!.getLongProperty(BatteryManager.BATTERY_PROPERTY_CURRENT_NOW)
+            // 电池电压 伏特
+            val batteryVoltage = GlobalStatus.batteryVoltage
+            // 电池功耗
+            val batteryCurrentNowMa = (batteryVoltage * batteryCurrentNow / -10000).toInt() / 100f
+            batteryCurrentNowMa.run {
                 if (this > -20000 && this < 20000) {
-                    batState = "" + (if (this > 0) ("+" + this) else this) + "mA"
+                    batState = "" + (if (this > 0) ("+$this") else this) + "W"
                 }
             }
         }
